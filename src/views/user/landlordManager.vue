@@ -165,6 +165,8 @@ export default {
         "landlord_id":landlord_id,
         "landlord_status":landlord_status?1:0,
         "landlord_credit":landlord_credit
+      }).then(res=>{
+        this.$message("修改成功")
       })
     }
   },

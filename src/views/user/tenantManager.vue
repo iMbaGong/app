@@ -131,7 +131,9 @@ export default {
     onCreditChange(user_name,credit) {
       //调用修改信用分的api
       console.log(user_name,credit)
-      changeUserCredit(user_name,credit)
+      changeUserCredit(user_name,credit).then(res=>{
+        this.$message("修改成功")
+      })
     },
   },
 };
