@@ -102,19 +102,18 @@ export function addFavor(data,user_name,homestay_id){
   })
 }
 
-export function delFavor(data,user_name,homestay_id){
+export function delFavor(user_name,homestay_id){
   return request({
-    url:'/homestays/delfavor'+'/'+user_name+'/'+homestay_id,
-    method:'post',
-    data
+    url:'/homestays/delfavor/'+user_name+'/'+homestay_id,
+    method:'get',
+
   })
 }
 
-export function getUserFavor(data,user_name){
+export function getUserFavor(user_name){
   return request({
-    url:'/homestays/favor'+'/'+user_name,
+    url:'/homestays/favor/'+user_name,
     method:'get',
-    data
   })
 }
 
