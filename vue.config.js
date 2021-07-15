@@ -14,7 +14,7 @@ module.exports = {
     https: false,
     proxy: {
       '/api': {
-        target: 'http://47.93.255.191:2021',//http://localhost:52472
+        target: 'http://localhost:52472',//http://47.93.255.191:2021
         ws:true,
         changeOrigin: true,
         pathRewrite: {

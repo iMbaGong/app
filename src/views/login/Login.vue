@@ -130,7 +130,9 @@ export default defineComponent({
               .then(res => {
                 that.$store.commit('setToken',res.data.token)
                 that.$store.commit('setUserName',res.data.user_name)
+                that.$store.commit('setUserId',res.data.user_id)
                 that.$store.commit('setUserRole',that.userInfo.roles)
+                localStorage.setItem("user",JSON.stringify(res.data))
                 setTimeout(() => {
                   this.$notify({
                     title: '登录成功',
@@ -144,7 +146,7 @@ export default defineComponent({
                       },300)
                     }
                   });
-                },2000)
+                },1000)
               })
               .catch(err => {
                 that.fullLoading = false
