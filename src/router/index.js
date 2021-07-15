@@ -3,6 +3,8 @@ import Layout from "../layout/Layout";
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import store from '@/store/index'
+import service from '../utils/network'
+
 const routes = [
   {
     path:'/',
@@ -291,9 +293,15 @@ router.beforeEach((to, from, next) => {
   if(to.path === '/login' || to.path === '/register'){
     store.commit('setToken','')
     store.commit('setUserName','')
+    localStorage.removeItem("user")
     next()
   }else{
-    next()
+    service.get("users/verify/token").then(res=>next()).catch(err=>{
+      next({
+             path: '/login',
+             query: {redirect: to.fullPath}
+           })
+    })
   }
 })
 

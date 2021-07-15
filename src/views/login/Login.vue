@@ -133,6 +133,7 @@ export default defineComponent({
                 that.$store.commit('setUserId',res.data.user_id)
                 that.$store.commit('setUserRole',that.userInfo.roles)
                 localStorage.setItem("user",JSON.stringify(res.data))
+                localStorage.setItem('token',res.headers.token)
                 setTimeout(() => {
                   this.$notify({
                     title: '登录成功',

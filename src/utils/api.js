@@ -236,3 +236,10 @@ export function getAllAdmin(){
     method: 'get',
   })
 }
+
+export function verifyTokensw(){
+  return request({
+    url:'/users/verify/token',
+    method: 'get'
+  })
+}
