@@ -14,24 +14,24 @@
       >
       <template #header>
       <div>
-        <el-button
-        type="text"
+        <el-button 
+        type="text" 
         size="mini" icon="el-icon-s-operation"  @click="output">筛选</el-button>
         <!-- Form -->
 
       <el-dialog title="筛选条件" v-model="dialogFormVisible">
         <el-form :model="form">
         <!--客容量-->
-          <el-form-item label="客容量"
+          <el-form-item label="客容量" 
           :label-width="formLabelWidth"
           prop="homestay_cap"
           >
             <el-input-number v-model="homestay_cap" @change="handleChange" :min="1"  label="人数"></el-input-number>
           </el-form-item >
           <!--日期-->
-          <el-form-item label="时间"
+          <el-form-item label="时间" 
           :label-width="formLabelWidth"
-
+          
           >
               <el-date-picker
             v-model="value"
@@ -57,7 +57,7 @@
           </el-option>
         </el-select>
           </el-form-item >
-
+          
 
         </el-form>
         <template #footer>
@@ -127,25 +127,29 @@
             <template #default="scope">
         <el-popover effect="light" trigger="hover" placement="top">
           <template #default>
-            <p>评分: {{ scope.row.grade===null?"暂无评分":scope.row.grade }}</p>
+            <p>评分: {{ scope.row.grade }}</p>
             <p>评分数: {{ scope.row.grade_num }}</p>
           </template>
           <template #reference>
             <div class="name-wrapper">
-              <el-tag size="medium">{{ scope.row.grade===null?"暂无评分":scope.row.grade }}</el-tag>
+              <el-tag size="medium">{{ scope.row.grade }}</el-tag>
             </div>
           </template>
         </el-popover>
       </template>
     </el-table-column>
 
-    <!--操作列-->
+    <!--操作列-->          
           <el-table-column
            label="操作"
            align="center"
           >
             <template #default="scope">
-              <el-button type="primary" round>查看详情</el-button>
+              <el-button 
+              type="primary" 
+              round
+              @click="seeForMore(scope.row.homestay_id)"
+              >查看详情</el-button>
             </template>
           </el-table-column>
     <!--房名和地址搜索-->
@@ -160,27 +164,22 @@
     </el-table-column>
   </el-table>
 
-
+  
 
 
 
     </el-main>
   </el-container>
-
+ 
 
 </template>
 
 <script>
-
-  import {filterHomestays, getAllHomestays} from "../../utils/api";
-
  export default {
-   created() {
+   created:function()
+   {
       //获取所有民宿信息
-      getAllHomestays().then(res=>{
-        this.tableData = res.data
-      })
-
+      //getAllHomeStays()
    },
     data() {
       return {
@@ -254,7 +253,7 @@
               let diff=b-a;
             return (diff<0||diff>30);
           },
-
+          
         value:'',
       }
     },
@@ -278,15 +277,11 @@
         var that=this
         that.dialogFormVisible = false;
         //民宿筛选
-        filterHomestays({
-            "cap_max":this.homestay_cap,
-            "cap_min":this.homestay_cap,
-            "start_time":this.value[0],
-            "expire_time":this.value[1],
-            "type":this.myOption
-        }).then(res=>{
-            this.tableData = res.data
-        })
+        //filterHomeStays();
+    },
+    seeForMore(id)
+    {
+      this.$router.push(`/singleRoom/${id}`)
     }
     }
   }

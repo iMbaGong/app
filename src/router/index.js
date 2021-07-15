@@ -6,7 +6,7 @@ import store from '@/store/index'
 const routes = [
   {
     path:'/',
-    redirect:'/login'
+    redirect:'/user'
   },
   {
     path: '/login',
@@ -273,7 +273,7 @@ const routes = [
         meta:{title:"查看房源",roles:'user',hide:false,requireAuth: true},
       },
       {
-        path: '/singleRoom',
+        path: '/singleRoom/:id',
         name:'房源详情',
         icon:'el-icon-search',
         component:() => import('@/secviews/viewListing/singleRoom'),
