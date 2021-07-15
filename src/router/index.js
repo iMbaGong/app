@@ -89,6 +89,13 @@ const routes = [
     meta:{title:"消息管理",roles:'admin',hide:false,requireAuth: true},
     children: [
       {
+        path: '/writeLetter1',
+        name:'管理员写信',
+        icon:'el-icon-edit',
+        component:() => import('@/views/message/writeLetter'),
+        meta:{title:"写信",roles:'admin',hide:false,requireAuth: true},
+      },
+      {
         path: '/inbox1',
         name:'管理员收件箱',
         icon:'el-icon-message',
@@ -128,6 +135,13 @@ const routes = [
     meta:{title:"消息管理",roles:'users',hide:false,requireAuth: true},
     children: [
       {
+        path: '/writeLetter2',
+        name:'用户写信',
+        icon:'el-icon-edit',
+        component:() => import('@/secviews/message/writeLetter'),
+        meta:{title:"写信",roles:'user',hide:false,requireAuth: true},
+      },
+      {
         path: '/inbox2',
         name:'用户收件箱',
         icon:'el-icon-message',
@@ -140,7 +154,7 @@ const routes = [
         icon:'el-icon-s-promotion',
         component:() => import('@/secviews/message/outbox'),
         meta:{title:"发件箱",roles:'user',hide:false,requireAuth: true},
-      },
+      }
     ]
   },
   {
