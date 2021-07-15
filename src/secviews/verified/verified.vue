@@ -31,6 +31,9 @@
 
 <script>
 
+import {verified} from "../../utils/api";
+import {getLocalUser} from "../../utils/common";
+
 export default {
   name: 'Cerificate',
   data() {
@@ -74,7 +77,19 @@ export default {
         type: 'warning'
       }).then(() => {
         // 实名认证
-        //verified(data)
+        verified({
+            "user_id":getLocalUser().user_id,
+            "user_name":getLocalUser().user_name,
+            "Customer":{
+                "customer_realname":this.ruleForm.realname,
+                "customer_identity":this.ruleForm.identity
+            }
+        }).then(res=>{
+            this.$message.success("认证成功")
+        }).catch(err=>{
+            this.$message.error(err)
+        })
+
       })
     }
   }

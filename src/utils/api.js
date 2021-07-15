@@ -56,27 +56,25 @@ export function addHomestays(data){
   })
 }
 
-export function getAllHomestays(data,order){
+export function getAllHomestays(){
   return request({
-    url:'/homestays/all'+'/'+'/'+order,
-    method:'get',
+    url:'/homestays/all',
+    method:'get'
+  })
+}
+
+export function filterHomestays(data){
+  return request({
+    url:'/homestays/filter',
+    method:'post',
     data
   })
 }
 
-export function filterHomestays(data,order){
-  return request({
-    url:'/homestays/filter'+'/'+order,
-    method:'get',
-    data
-  })
-}
-
-export function getHomestays(data,user_name){
+export function getHomestays(user_name){
   return request({
     url:'/homestays/bylandlord'+'/'+user_name,
-    method:'get',
-    data
+    method:'get'
   })
 }
 
