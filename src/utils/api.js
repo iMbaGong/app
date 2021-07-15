@@ -56,11 +56,10 @@ export function addHomestays(data){
   })
 }
 
-export function getAllHomestays(data,order){
+export function getAllHomestays(){
   return request({
-    url:'/homestays/all'+'/'+'/'+order,
-    method:'get',
-    data
+    url:'/homestays/all/grade',
+    method:'get'
   })
 }
 
@@ -215,11 +214,10 @@ export function changeCommentStatus(data,order){
   })
 }
 
-export function changeUserCredit(data,user_name,credit){
+export function changeUserCredit(user_name,credit){
   return request({
     url:'/users/credit'+'/'+user_name+'/'+credit,
-    method:'post',
-    data
+    method:'post'
   })
 }
 
@@ -231,3 +229,16 @@ export function changeLandloadInfo(data){
   })
 }
 
+export function getAllUser(){
+  return request({
+    url:'users/all',
+    method: 'get',
+  })
+}
+
+export function getAllAdmin(){
+  return request({
+    url:'/users/all/admin',
+    method: 'get',
+  })
+}

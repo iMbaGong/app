@@ -15,7 +15,7 @@ export default defineComponent({
 </script>
 
 <style>
-html, body {
+html, body, #app {
   width: 100%;
   height: 100%;
   padding: 0;

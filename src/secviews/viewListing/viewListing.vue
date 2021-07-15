@@ -171,11 +171,11 @@
 </template>
 
 <script>
+import { getAllHomestays } from "utils/api";
  export default {
-   created:function()
-   {
+   created() {
       //获取所有民宿信息
-      //getAllHomeStays()
+      console.log(getAllHomestays());
    },
     data() {
       return {
