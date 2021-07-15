@@ -126,27 +126,24 @@ export function sendSessions(data){
   })
 }
 
-export function getRecvSessions(data,user_name,status){
+export function getRecvSessions(user_name){
   return request({
-    url:'/sessions/recv'+'/'+user_name+'/'+status,
-    method:'get',
-    data
+    url:'/sessions/recv/'+user_name,
+    method:'get'
   })
 }
 
-export function getSendSessions(data,user_name){
+export function getSendSessions(user_name){
   return request({
-    url:'/sessions/send'+'/'+user_name,
-    method:'get',
-    data
+    url:'/sessions/send/'+user_name,
+    method:'get'
   })
 }
 
-export function setSessionread(data,session_id){
+export function setSessionread(session_id){
   return request({
-    url:'/homestays/readed'+'/'+session_id,
-    method:'post',
-    data
+    url:'/sessions/readed/'+session_id,
+    method:'get'
   })
 }
 
@@ -214,14 +211,14 @@ export function changeCommentStatus(data,order){
 
 export function changeUserCredit(user_name,credit){
   return request({
-    url:'/users/credit'+'/'+user_name+'/'+credit,
-    method:'post'
+    url:'/users/credit/'+user_name+'/'+credit,
+    method:'get'
   })
 }
 
 export function changeLandloadInfo(data){
   return request({
-    url:'/users/updata/landlord',
+    url:'/users/update/landlord',
     method:'post',
     data
   })

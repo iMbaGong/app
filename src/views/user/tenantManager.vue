@@ -83,7 +83,8 @@
 </template>
 
 <script>
-import { getAllUser,changeUserCredit } from "utils/api";
+import {changeUserCredit,getAllUser} from "../../utils/api";
+
 export default {
   created: function () {
     getAllUser().then((r) => {
@@ -129,7 +130,8 @@ export default {
     },
     onCreditChange(user_name,credit) {
       //调用修改信用分的api
-      changeUserCredit(user_name,credit);
+      console.log(user_name,credit)
+      changeUserCredit(user_name,credit)
     },
   },
 };

@@ -162,9 +162,9 @@ export default {
   methods: {
     onChange(landlord_id,landlord_status,landlord_credit){
       changeLandloadInfo({
-        landlord_id,
-        landlord_status,
-        landlord_credit
+        "landlord_id":landlord_id,
+        "landlord_status":landlord_status?1:0,
+        "landlord_credit":landlord_credit
       })
     }
   },
