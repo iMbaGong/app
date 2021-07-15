@@ -77,10 +77,20 @@
 </template>
 
 <script>
+import {getOrderById} from "../../utils/api";
+
 export default {
   name: 'OrderDetail',
+  created(){
+    getOrderById(this.$route.params.id).then(res=>{
+      this.order = res.data
+      console.log(this.order)
+    })
+  },
   data() {
-    return {}
+    return {
+      order:{}
+    }
   }
 }
 </script>

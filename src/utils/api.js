@@ -168,11 +168,11 @@ export function payOrder(data,order_id){
   })
 }
 
-export function getOrderById(data,order_id){
+export function getOrderById(order_id){
   return request({
     url:'/orders'+'/'+order_id,
-    method:'get',
-    data
+    method:'get'
+
   })
 }
 
@@ -184,11 +184,10 @@ export function delOrderById(data,order_id){
   })
 }
 
-export function getAllOrders(data,user_name){
+export function getUserOrders(user_name){
   return request({
     url:'/orders/user'+'/'+user_name,
     method:'get',
-    data
   })
 }
 

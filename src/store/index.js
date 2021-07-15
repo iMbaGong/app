@@ -2,7 +2,7 @@ import {createStore} from "vuex"
 
 export default createStore({
   state:{
-    user:'001',
+    user_id:0,
     token:'',
     userInfo:{
       username:'',
@@ -27,6 +27,9 @@ export default createStore({
     },
     setUserRole(state,userRole){
       state.userInfo.userRole = userRole
+    },
+    setUserId(state,userId){
+      state.user_id = userId
     }
   },
   //异步提交mutations
