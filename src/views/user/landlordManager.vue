@@ -1,5 +1,4 @@
 <template>
-
   <el-container>
     <el-main>
       <el-table
@@ -9,57 +8,67 @@
           )
         "
         style="width: 70%"
-        class ="tableData"
+        class="tableData"
       >
         <el-table-column type="expand">
           <template #default="props">
             <el-form label-position="left" inline class="demo-table-expand">
               <div>
                 <el-form-item label="客户昵称：">
-                  <span class="element">{{ props.row.user_name }}</span>
+                  <span class="element">{{
+                    props.row.customer_realname || ""
+                  }}</span>
                 </el-form-item>
               </div>
               <div>
                 <el-form-item label="客户邮箱：">
-                  <span class="element">{{ props.row.customer_email }}</span>
+                  <span class="element">{{
+                    props.row.customer_email || ""
+                  }}</span>
                 </el-form-item>
               </div>
               <div>
                 <el-form-item label="客户 ID：">
-                  <span class="element">{{ props.row.user_id }}</span>
+                  <span class="element">{{
+                    props.row.customer_identity || ""
+                  }}</span>
                 </el-form-item>
               </div>
               <div>
                 <el-form-item label="客户手机：">
-                  <span class="element">{{ props.row.customer_phone }}</span>
+                  <span class="element">{{
+                    props.row.customer_phone || ""
+                  }}</span>
                 </el-form-item>
               </div>
               <div>
                 <el-form-item label="真实姓名：">
-                  <span class="element">{{ props.row.customer_realname }}</span>
+                  <span class="element">{{
+                    props.row.customer_realname || ""
+                  }}</span>
                 </el-form-item>
               </div>
               <div>
                 <el-form-item label="客户性别：">
                   <span class="element">{{
-                    props.row.gender ? "男" : "女"
+                    props.row.customer_gender ? "男" : "女"
                   }}</span>
                 </el-form-item>
               </div>
               <div>
                 <el-form-item label="民宿数量：">
-                  <span class="element">{{ props.row.house_num }}</span>
+                  <span class="element">{{ props.row.house_num || "" }}</span>
                 </el-form-item>
               </div>
             </el-form>
           </template>
         </el-table-column>
         <!--客户id-->
-        <el-table-column label="客户 ID" prop="user_id" text-align:center >
+        <el-table-column label="房东 ID" prop="user_id" text-align:center>
         </el-table-column>
         <!--客户昵称-->
         <el-table-column
-          label="客户昵称"
+          label="房东昵称"
           prop="user_name"
           text-align:center
           class="element"
@@ -76,7 +85,7 @@
               active-text="正常"
               inactive-text="冻结"
               class="element"
-              @change="onStatusChange"
+              @change="onChange(scope.row.user_id,scope.row.landlord_status,scope.row.landlord_credit)"
             >
             </el-switch>
           </template>
@@ -89,7 +98,7 @@
               :min="0"
               :max="100"
               label="信用分"
-              @change="onCreditChange"
+              @change="onChange(scope.row.user_id,scope.row.landlord_status,scope.row.landlord_credit)"
             ></el-input-number>
           </template>
         </el-table-column>
@@ -110,68 +119,54 @@
 </template>
 
 <script>
+import { getAllAdmin,changeLandloadInfo } from "utils/api";
 export default {
-  created:function()
-  {
-    //缺接口，获取所有房东的信息
+  created: function () {
+    getAllAdmin().then((r) => {
+      r.data.forEach((item) => {
+        const { user_id, user_name } = item;
+        const {
+          customer_email,
+          customer_phone,
+          customer_realname,
+          customer_gender,
+          customer_identity,
+        } = item.Customer;
+        const { landlord_status, landlord_credit } = item.Customer.Landlord;
+        const house_num = 2;
+        this.tableData.push({
+          user_id,
+          user_name,
+          customer_email,
+          customer_phone,
+          customer_realname,
+          customer_gender,
+          customer_identity,
+          landlord_status,
+          landlord_credit,
+          house_num,
+        });
+      });
+    });
   },
   data() {
     return {
       url: "",
       urlList: [],
       timer: null,
-      tableData: [
-        {
-          user_id: 10000001,
-          user_name: "好滋味",
-          customer_email: "adafdsa@qq.com",
-          customer_phone: "110",
-          customer_identity: "4503041999907121511",
-          customer_realname: "小可爱",
-          gender: 0,
-          landlord_status: true,
-          landlord_credit: 100,
-          house_num: 2,
-        },
-        {
-          user_id: 10000002,
-          user_name: "好滋味",
-          customer_email: "ghdgdssf@qq.com",
-          customer_phone: "120",
-          customer_identity: "4503041999907121511",
-          customer_realname: "小可爱",
-          gender: 1,
-          landlord_status: true,
-          landlord_credit: 0,
-          house_num: 3,
-        },
-        {
-          user_id: 10000003,
-          user_name: "好滋味",
-          customer_email: "ghdgdssf@qq.com",
-          customer_phone: "120",
-          customer_identity: "4503041999907121511",
-          customer_realname: "小可爱",
-          gender: 1,
-          landlord_status: true,
-          landlord_credit: 50,
-          house_num: 3,
-        },
-        {
-          user_id: 10000004,
-          user_name: "好滋味",
-          customer_email: "ghdgdssf@qq.com",
-          customer_phone: "120",
-          customer_identity: "4503041999907121511",
-          customer_realname: "小可爱",
-          gender: 0,
-          landlord_status: true,
-          landlord_credit: 80,
-          house_num: 1,
-        },
-      ],
+      tableData: [],
       search: "",
     };
+  },
+
+  methods: {
+    onChange(landlord_id,landlord_status,landlord_credit){
+      changeLandloadInfo({
+        landlord_id,
+        landlord_status,
+        landlord_credit
+      })
+    }
   },
 };
 </script>
@@ -182,6 +177,5 @@ export default {
 }
 .element {
   height: 30px;
-  
 }
 </style>

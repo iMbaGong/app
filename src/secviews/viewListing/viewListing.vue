@@ -171,15 +171,16 @@
 </template>
 
 <script>
+
   import {filterHomestays, getAllHomestays} from "../../utils/api";
 
  export default {
-   created:function()
-   {
+   created() {
       //获取所有民宿信息
       getAllHomestays().then(res=>{
         this.tableData = res.data
       })
+
    },
     data() {
       return {

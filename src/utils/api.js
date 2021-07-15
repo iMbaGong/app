@@ -212,11 +212,10 @@ export function changeCommentStatus(data,order){
   })
 }
 
-export function changeUserCredit(data,user_name,credit){
+export function changeUserCredit(user_name,credit){
   return request({
     url:'/users/credit'+'/'+user_name+'/'+credit,
-    method:'post',
-    data
+    method:'post'
   })
 }
 
@@ -228,3 +227,16 @@ export function changeLandloadInfo(data){
   })
 }
 
+export function getAllUser(){
+  return request({
+    url:'users/all',
+    method: 'get',
+  })
+}
+
+export function getAllAdmin(){
+  return request({
+    url:'/users/all/admin',
+    method: 'get',
+  })
+}

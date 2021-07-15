@@ -1,6 +1,6 @@
 <template>
 <el-container class="container">
-  <el-aside :style="defaultHeight" :width="asideWidth">
+  <el-aside :width="asideWidth">
     <el-affix :z-index="1200">
       <div class="aside-logo" @click="onRefresh">
         <el-image class="logo-image" :src="logo" fit="contain"/>
@@ -81,7 +81,7 @@
         </el-col>
       </el-row>
     </el-header>
-    <el-main :style="defaultHeight">
+    <el-main :style="{/*defaultHeight*/}">
       <router-view/>
     </el-main>
   </el-container>
@@ -105,12 +105,12 @@ export default {
       logo:require('@/assets/logo2.jpg'),
       isCollapse: false,
       asideWidth:'220px',
-      defaultHeight:{
+      /*defaultHeight:{
         height:''
-      }
+      }*/
     });
     onBeforeMount(() => {
-      state.defaultHeight.height = document.body.clientHeight + 'px'
+      //state.defaultHeight.height = document.body.clientHeight + 'px'
       state.routers = router.options.routes
       if(!store.state.userInfo.username){
         label.value = '登录'
@@ -147,6 +147,8 @@ export default {
 <style lang="less">
 .container{
   background: rgb(245, 247, 249);
+  height: 100%;
+  
   .el-aside{
     height: 100%;
     transition: all .5s;
