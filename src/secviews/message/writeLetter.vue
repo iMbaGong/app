@@ -41,6 +41,8 @@
 
 <script>
 
+import {sendSessions} from "../../utils/api";
+
 export default {
   name: 'Cerificate',
   data() {
@@ -95,6 +97,9 @@ export default {
 
         //调用api接口
         //...
+          sendSessions(this.ruleForm).then(res=>{
+              this.$message.success("发送成功")
+          })
       })
     }
   }

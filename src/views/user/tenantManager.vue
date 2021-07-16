@@ -7,7 +7,7 @@
             (data) => !search || String(data.user_id).startsWith(search)
           )
         "
-        style="width: 70%"
+        style="width: 75%"
         class="tableData"
       >
         <el-table-column type="expand">

@@ -40,12 +40,12 @@
             <template #default="scope">
               <el-popover effect="light" trigger="hover" placement="top">
                 <template #default>
-                  <p class="element">收件人名: {{ scope.row.Sender.user_name }}</p>
-                  <p class="element">用户 ID: {{ scope.row.Sender.user_id }}</p>
+                  <p class="element">收件人名: {{ scope.row.Receiver.user_name }}</p>
+                  <p class="element">用户 ID: {{ scope.row.Receiver.user_id }}</p>
                 </template>
                 <template #reference>
                   <div class="user_name-wrapper">
-                    <el-tag size="medium">{{ scope.row.Sender.user_name }}</el-tag>
+                    <el-tag size="medium">{{ scope.row.Receiver.user_name }}</el-tag>
                   </div>
                 </template>
               </el-popover>

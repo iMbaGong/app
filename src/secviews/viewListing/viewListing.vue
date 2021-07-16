@@ -175,11 +175,15 @@
 </template>
 
 <script>
+  import {filterHomestays, getAllHomestays} from "../../utils/api";
  export default {
-   created:function()
+   created()
    {
       //获取所有民宿信息
-      //getAllHomeStays()
+     getAllHomestays().then(res=>{
+       this.tableData = res.data
+     })
+
    },
     data() {
       return {
@@ -274,10 +278,18 @@
     },
     handleFilter()
     {
-        var that=this
-        that.dialogFormVisible = false;
-        //民宿筛选
-        //filterHomeStays();
+      var that=this
+      that.dialogFormVisible = false;
+      //民宿筛选
+      filterHomestays({
+        "cap_max":this.homestay_cap,
+        "cap_min":this.homestay_cap,
+        "start_time":this.value[0],
+        "expire_time":this.value[1],
+        "type":this.myOption
+      }).then(res=>{
+        this.tableData = res.data
+      })
     },
     seeForMore(id)
     {

@@ -63,6 +63,13 @@ export function getAllHomestays(){
   })
 }
 
+export function getHomestayById(id){
+  return request({
+    url:'/homestays/'+id,
+    method:'get'
+  })
+}
+
 export function filterHomestays(data){
   return request({
     url:'/homestays/filter',
@@ -94,11 +101,11 @@ export function changeHomestayStatus(data,homestay_id,status){
   })
 }
 
-export function addFavor(data,user_name,homestay_id){
+export function addFavor(user_name,homestay_id){
   return request({
-    url:'/homestays/addfavor'+'/'+user_name+'/'+homestay_id,
-    method:'post',
-    data
+    url:'/homestays/addfavor/'+user_name+'/'+homestay_id,
+    method:'get',
+
   })
 }
 

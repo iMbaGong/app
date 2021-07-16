@@ -14,7 +14,7 @@ const service = axios.create({
 service.interceptors.request.use(function (config){
   const token = localStorage.getItem('token');
   console.log("这是"+config.url+"请求的请求体内容",config)
-  if(config.url === '/login'|| config.url === '/register') {
+  if(config.url === '/users/login'|| config.url === '/users/register') {
     return config
   }
   if(!token){

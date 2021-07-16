@@ -89,38 +89,38 @@
       <el-col :span="12"
         ><div style="height: 400px; width: 600px; margin: 0 auto">
           <img
-            src="@/assets/abc.jpg"
+            :src="form.homestay_pic"
             alt=""
             style="width: 100%; height: 100%"
           >
           <div style="margin-top: 15px">
             <el-row :gutter="40">
               <el-col :span="12"
-                ><div>民宿名称：{{ form.name }}</div></el-col
+                ><div>民宿名称：{{ form.homestay_name }}</div></el-col
               >
               <el-col :span="12"
-                ><div>民宿地址：{{ form.region }}</div></el-col
-              >
-            </el-row>
-            <el-row :gutter="40">
-              <el-col :span="12"
-                ><div>客人容量：{{ form.clientNum }}</div></el-col
-              >
-              <el-col :span="12"
-                ><div>客床数量：{{ form.bedNum }}</div></el-col
+                ><div>民宿地址：{{ form.homestay_addr }}</div></el-col
               >
             </el-row>
             <el-row :gutter="40">
               <el-col :span="12"
-                ><div>设施情况：{{ form.equipment }}</div></el-col
+                ><div>客人容量：{{ form.homestay_cap }}</div></el-col
               >
               <el-col :span="12"
-                ><div>周边情况：{{ form.surrounding }}</div></el-col
+                ><div>客床数量：{{ form.bed_number }}</div></el-col
+              >
+            </el-row>
+            <el-row :gutter="40">
+              <el-col :span="12"
+                ><div>设施情况：{{ form.wifi===1?"有WiFi":"无WiFi" }}</div></el-col
+              >
+              <el-col :span="12"
+                ><div>周边情况：{{ form.by_the_street===1?"临街":"不临街" }}</div></el-col
               >
             </el-row>
             <el-row :gutter="40">
               <el-col :span="24"
-                ><div>房间简介：{{ form.desc }}</div></el-col
+                ><div>房间简介：{{ form.homestay_info }}</div></el-col
               >
             </el-row>
           </div>
@@ -206,82 +206,23 @@
 </template>
 
 <script>
+  import {addCommments, addFavor, getHomestayById} from "../../utils/api";
+  import {getLocalUser} from "../../utils/common";
+
 export default {
   name: "singleRoom",
+  created(){
+    getHomestayById(this.$route.params.id).then(res=>{
+      this.form = res.data
+    })
+  },
   data() {
     return {
-      create(){
-          this.pageForm=JSON.parse( localStorage.getItem('HomeTableData') );
-        },
-        tableData: [{
-        id: '1',
-        name: '嘉实招待中心',
-        info: '嘉定比较不错的房子',
-        cap: '2',
-        area: '80',
-        address: '上海市普陀区真北路',
-        price: '2000',
-        status: '已住',
-        street: '临街',
-        wifi: '提供WiFi',
-        bathtub: '提供浴缸',
-        bed_number: '3'
-      }, {
-        id: '2',
-        name: '嘉实招待中心',
-        info: '嘉定比较不错的房子',
-        cap: '2',
-        area: '80',
-        address: '上海市普陀区真北路',
-        price: '2000',
-        status: '已住',
-        street: '临街',
-        wifi: '提供WiFi',
-        bathtub: '提供浴缸',
-        bed_number: '3'
-      }, {
-        id: '3',
-        name: '嘉实招待中心',
-        info: '嘉定比较不错的房子',
-        cap: '2',
-        area: '80',
-        address: '上海市普陀区真北路',
-        price: '2000',
-        status: '已住',
-        street: '临街',
-        wifi: '提供WiFi',
-        bathtub: '提供浴缸',
-        bed_number: '3'
-      }, {
-        id: '4',
-        name: '嘉实招待中心',
-        info: '嘉定比较不错的房子',
-        cap: '2',
-        area: '80',
-        address: '上海市普陀区真北路',
-        price: '2000',
-        status: '已住',
-        street: '临街',
-        wifi: '提供WiFi',
-        bathtub: '提供浴缸',
-        bed_number: '3'
-      }],
-      
-
       dialogRoomVisible: false,
       dialogCommitVisble: false,
       form: {
-        desc: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: "",
       },
       formLabelWidth: "120px",
-      form: {},
       circleUrl:
         "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
            dialogVisible: false,
@@ -291,9 +232,6 @@ export default {
       value2: null,
       colors: ['#99A9BF', '#F7BA2A', '#FF9900']
     };
-  },
-  created() {
-    this.form = JSON.parse(localStorage.getItem("ruleForm"));
   },
   methods: {
       handleClose(done) {
@@ -314,7 +252,7 @@ export default {
     },
       uploadw () {
         //调用增加评论api
-        //addComments(data)
+        //addCommments()
       this.$message({
         message: '举报提交成功',
         type: 'success'
@@ -324,7 +262,9 @@ export default {
     {
       console.log('你点击了收藏按钮!');
       //添加收藏
-      //addFavor(data);
+      addFavor(getLocalUser().user_name,this.form.homestay_id).then(res=>{
+        this.$message.success("收藏成功")
+      })
       //然后根据返回值报一个添加收藏或取消收藏地信息
     }
   },
