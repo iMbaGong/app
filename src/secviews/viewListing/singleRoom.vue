@@ -2,83 +2,103 @@
   <div class="singleRoom">
     <div class="box">
       <el-row>
+      <!--展示房间名-->
         <el-col :span="12"
           ><div>
-            <h2>{{ form.name }}</h2>
+            <h2>{{ form.homestay_name }}</h2>
           </div></el-col
         >
+        <!--显示评分,这里要从后端拉一下这个房间的评分，要调一下api-->
         <el-col :span="4"
-          ><div style="position: relative; top: 15px">
-            <el-button type="danger" round @click="dialogVisibleplus = true"
-              >举报</el-button
-            >
+          ><div style="position: relative; top: 15px"
+          >
+          <el-rate
+            prop="grade"
+            v-model="form.grade"
+            disabled
+            show-score
+            text-color="#ff9900"
+            score-template="{value}">
+          </el-rate>
+
           </div></el-col
         >
 
           <el-col :span="4"
           ><div style="position: relative; top: 15px">
-           <el-dropdown>
-    <div style="position: relative; top: 15px">
-      <el-avatar size="large" :src="circleUrl"></el-avatar>
-    </div>
-    <template #dropdown>
-      <el-dropdown-menu>
-        <el-popover
-          placement="bottom"
-          title="用户昵称："
-          :width="200"
-          trigger="click"
-          content="用户的昵称为li"
-        >
-          <template #reference>
-            <el-dropdown-item>昵称</el-dropdown-item>
-          </template>
-        </el-popover>
-        <el-popover
-          placement="bottom"
-          title="用户的信用分："
-          :width="200"
-          trigger="click"
-          content="用户的信用分为：95"
-        >
-          <template #reference>
-            <el-dropdown-item>信用分</el-dropdown-item>
-          </template>
-        </el-popover>
-
-        <el-dropdown-item @click="dialogCommitVisble = true">
-          交流</el-dropdown-item
-        >
-
-        <el-dropdown-item @click="dialogRoomVisible = true">名下房产</el-dropdown-item>
-        <el-dialog title="我的民宿" v-model="dialogRoomVisible">
-  <el-table :data="tableData">
-    <el-table-column property="id" label="序号" width="150"></el-table-column>
-    <el-table-column property="name" label="姓名" width="200"></el-table-column>
-    <el-table-column property="info" label="信息"></el-table-column>
-    <el-table-column property="address" label ="地址"></el-table-column>
-  </el-table>
-</el-dialog>
-      </el-dropdown-menu>
-    </template>
+          <!--头像下拉-->
+      <el-dropdown>
+        <div style="position: relative; top: 15px">
+          <el-avatar size="large" :src="circleUrl"></el-avatar>
+        </div>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <!--用户昵称-->
+            <el-popover
+              placement="bottom"
+              title="用户昵称："
+              :width="200"
+              trigger="click"
+              content="用户的昵称为li"
+            >
+              <template #reference>
+                <el-dropdown-item>昵称</el-dropdown-item>
+              </template>
+            <!--用户信用分-->
+            </el-popover>
+            <el-popover
+              placement="bottom"
+              title="用户的信用分："
+              :width="200"
+              trigger="click"
+              content="用户的信用分为：95"
+            >
+              <template #reference>
+                <el-dropdown-item>信用分</el-dropdown-item>
+              </template>
+            </el-popover>
+            <!--询问房东-->
+            <el-dropdown-item @click="dialogCommitVisble = true">
+              询问房东</el-dropdown-item
+            >
+            
+            </el-dropdown-menu>
+        </template>
   </el-dropdown>
 
-  <el-dialog title="交流" v-model="dialogCommitVisble">
-    <el-form :model="form">
-      <el-form-item label="交流名称" :label-width="formLabelWidth">
-        <el-input v-model="form.desc" autocomplete="off"></el-input>
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="dialogCommitVisble = false">取 消</el-button>
-        <el-button type="primary" @click="dialogCommitVisble = false"
-          >确 定</el-button
-        >
-      </span>
-    </template>
-  </el-dialog></div
-        ></el-col>
+    <!--询问房东-->
+    <el-dialog
+      title="询问"
+      v-model="dialogCommitVisble"
+      width="50%"
+      :before-close="handleClose"
+    >
+    <el-input
+        type="text"
+        prop="session_type"
+        placeholder="请输入标题"
+        v-model="query.session_type"
+        maxlength="14"
+        show-word-limit
+      >
+      </el-input>
+      <div style="margin: 20px 0;"></div>
+      <el-input
+        prop="session_detail"
+        type="textarea"
+        placeholder="请输入问询内容"
+        v-model="query.session_detail"
+        maxlength="150"
+        show-word-limit
+      >
+      </el-input>
+      <div style="margin: 10px 0;"></div>
+      <el-button :plain="true" @click="uploadq">提交</el-button>
+      <el-button type="primary" @click="dialogCommitVisble=false">取消</el-button>
+    </el-dialog>
+
+
+      </div></el-col>
         <!-- <el-col :span="4"
           ><div style="position: relative; top: 15px">
             <el-avatar size="large" :src="circleUrl"></el-avatar></div
@@ -87,42 +107,31 @@
     </div>
     <el-row :gutter="40">
       <el-col :span="12"
-        ><div style="height: 400px; width: 600px; margin: 0 auto">
+        ><div style="height: 200px; width: 300px; margin: 0 auto">
           <img
             :src="form.homestay_pic"
             alt=""
             style="width: 100%; height: 100%"
           >
           <div style="margin-top: 15px">
-            <el-row :gutter="40">
-              <el-col :span="12"
-                ><div>民宿名称：{{ form.homestay_name }}</div></el-col
-              >
-              <el-col :span="12"
-                ><div>民宿地址：{{ form.homestay_addr }}</div></el-col
-              >
-            </el-row>
-            <el-row :gutter="40">
-              <el-col :span="12"
-                ><div>客人容量：{{ form.homestay_cap }}</div></el-col
-              >
-              <el-col :span="12"
-                ><div>客床数量：{{ form.bed_number }}</div></el-col
-              >
-            </el-row>
-            <el-row :gutter="40">
-              <el-col :span="12"
-                ><div>设施情况：{{ form.wifi===1?"有WiFi":"无WiFi" }}</div></el-col
-              >
-              <el-col :span="12"
-                ><div>周边情况：{{ form.by_the_street===1?"临街":"不临街" }}</div></el-col
-              >
-            </el-row>
-            <el-row :gutter="40">
-              <el-col :span="24"
-                ><div>房间简介：{{ form.homestay_info }}</div></el-col
-              >
-            </el-row>
+          <!--民宿详情-->
+          <el-collapse v-model="activeName" accordion>
+            <el-collapse-item title="+基本信息" name="1">
+              <div>民宿名称：{{ form.homestay_name }}</div>
+              <div>民宿地址：{{ form.homestay_addr }}</div>
+              <div>客人容量：{{ form.homestay_cap }}</div>
+            </el-collapse-item>
+            <el-collapse-item title="+设施情况" name="2">
+              <div>客床数量：{{ form.bed_number }}</div>
+              <div>网络环境：{{ form.wifi===1?"有WiFi":"无WiFi" }}</div>
+            </el-collapse-item>
+            <el-collapse-item title="+周边情况" name="3">
+              <div>周边情况：{{ form.by_the_street===1?"临街":"不临街" }}</div>
+            </el-collapse-item>
+            <el-collapse-item title="+房间简介" name="4">
+              <div>房间简介：{{ form.homestay_info }}</div>
+            </el-collapse-item>
+          </el-collapse>
           </div>
         </div></el-col
       >
@@ -132,6 +141,7 @@
                 <div class="rightDiv"><el-button class="rightDiv">预定</el-button></div>
                 <div class="rightDiv">时间：2021-09-09</div> -->
           <table>
+          <!--收藏按钮-->
             <tr width="150%">
               <import-table
                 ref="importTable"
@@ -143,65 +153,59 @@
                 >收藏</el-button>
             </tr>
             <br />
-            <tr>
-              <export-table ref="exportTable"></export-table>
-              <el-button type="primary" icon="el-icon-chat-dot-square"
-                @click="dialogVisible = true">评论</el-button
-              >
-            </tr>
-            <br />
+            <!--预定按钮-->
             <tr>
               <el-button type="primary" 
-              icon="el-icon-s-management
-              
-              ">预定</el-button>
+              icon="el-icon-s-management">预定</el-button>
             </tr>
             <br />
+            <!--查看评论按钮-->
+            <tr>
+              <el-button type="primary" 
+              icon="el-icon-s-comment">评论</el-button>
+            </tr>
+            <br />
+            <!--举报按钮-->
+            <tr>
+              <el-button type="danger" 
+              icon="el-icon-warning"
+              @click="dialogVisibleplus = true">举报</el-button>
+            </tr>
           </table></div
       ></el-col>
     </el-row>
+    <!--举报弹窗-->
     <el-dialog
       title="举报"
       v-model="dialogVisibleplus"
       width="50%"
       :before-close="handleClose"
     >
-      <el-input
-        type="textarea"
-        placeholder="请输入具体原因"
-        v-model="textarea"
-        maxlength="30"
+    <el-input
+        type="text"
+        prop="session_type"
+        placeholder="请输入标题"
+        v-model="appeal.session_type"
+        maxlength="14"
         show-word-limit
       >
       </el-input>
+      <div style="margin: 20px 0;"></div>
+      <el-input
+        prop="session_detail"
+        type="textarea"
+        placeholder="请输入举报内容"
+        v-model="appeal.session_detail"
+        maxlength="150"
+        show-word-limit
+      >
+      </el-input>
+      <div style="margin: 10px 0;"></div>
       <el-button :plain="true" @click="uploadw">提交</el-button>
-      <el-button type="primary" @click="gotoadd">取消</el-button>
+      <el-button type="primary" @click="dialogVisibleplus=false">取消</el-button>
     </el-dialog>
 
-    <el-dialog
-      title="评分"
-      v-model="dialogVisible"
-      width="50%"
-      :before-close="handleClose"
-    >
-      <span class="demonstration">请评分</span>
-      <el-rate v-model="value2" show-text> :colors="colors"> </el-rate>
-
-      <el-input
-        type="textarea"
-        placeholder="请输入具体评价内容"
-        v-model="textarea"
-        maxlength="30"
-        show-word-limit
-      >
-      </el-input>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button :plain="true" @click="upload">提交</el-button>
-          <el-button type="primary" @click="gotoadd">返回首页</el-button>
-        </span>
-      </template>
-    </el-dialog>
+    
   </div>
 </template>
 
@@ -210,7 +214,7 @@
   import {getLocalUser} from "../../utils/common";
 
 export default {
-  name: "singleRoom",
+  homestay_name: "singleRoom",
   created(){
     getHomestayById(this.$route.params.id).then(res=>{
       this.form = res.data
@@ -218,18 +222,40 @@ export default {
   },
   data() {
     return {
-      dialogRoomVisible: false,
-      dialogCommitVisble: false,
+      //举报信息
+      appeal:{
+        Sender:{
+            user_name:"root1"
+        },
+        Receiver:{
+            user_name:""
+        },
+        session_detail:"",
+        session_type:""
+    },
+    //询问信息
+    query:{
+        Sender:{
+            user_name:"root1"
+        },
+        Receiver:{
+            user_name:""
+        },
+        session_detail:"",
+        session_type:""
+    },
+
+
+      dialogCommitVisble: false,//控制询问房东窗口是否可见
       form: {
       },
       formLabelWidth: "120px",
       circleUrl:
         "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
            dialogVisible: false,
-        dialogVisibleplus:false,
+           
+        dialogVisibleplus:false,//控制举报窗口是否可见
       
-      textarea: null,
-      value2: null,
       colors: ['#99A9BF', '#F7BA2A', '#FF9900']
     };
   },
@@ -250,11 +276,21 @@ export default {
     gotoadd () {
       this.$router.replace('/')
     },
+      //提交举报信息
       uploadw () {
-        //调用增加评论api
-        //addCommments()
+        //调用发起会话api，把举报信息发给一个公共管理员账号
+        //...
       this.$message({
         message: '举报提交成功',
+        type: 'success'
+      })
+    },
+    //提交询问信息
+      uploadq () {
+        //调用发起会话api，把询问信息发给房东
+        //...
+      this.$message({
+        message: '询问提交成功',
         type: 'success'
       })
     },
@@ -265,7 +301,7 @@ export default {
       addFavor(getLocalUser().user_name,this.form.homestay_id).then(res=>{
         this.$message.success("收藏成功")
       })
-      //然后根据返回值报一个添加收藏或取消收藏地信息
+
     }
   },
 };
