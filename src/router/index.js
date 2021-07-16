@@ -287,6 +287,13 @@ const routes = [
         icon:'el-icon-search',
         component:() => import('@/secviews/viewListing/createOrder'),
         meta:{title:"创建订单",roles:'user',hide:true,requireAuth: true},
+      },
+      {
+        path: '/checkCommentList/:id',
+        name:'查看评论列表',
+        icon:'el-icon-search',
+        component:() => import('@/secviews/viewListing/checkCommentList'),
+        meta:{title:"创建订单",roles:'user',hide:true,requireAuth: true},
       }
 
     ]
