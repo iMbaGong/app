@@ -1,6 +1,6 @@
 <template>
 <el-container class="container">
-  <el-aside :width="asideWidth">
+  <el-aside :style="defaultHeight" :width="asideWidth">
     <el-affix :z-index="1200">
       <div class="aside-logo" @click="onRefresh">
         <el-image class="logo-image" :src="logo" fit="contain"/>
@@ -24,18 +24,33 @@
             {{menu.children[0].name}}
           </template>
         </el-menu-item>
-        <el-submenu v-else-if="menu.children && menu.children[0].meta.roles === this.roles&& menu.children[0].meta.hide===false " :index="menu.path">
+
+        <el-submenu v-else-if="menu.children && menu.children[0].meta.roles === this.roles&& menu.meta.hide===false " :index="menu.path">
           <template #title>
             <i :class="menu.icon"></i>
             <span :class="[isCollapse ? 'is-collapse' : '']">{{menu.name}}</span>
           </template>
           <el-menu-item v-for="child in menu.children" :key="child" :index="child.path">
-            <i :class="child.icon" v-if="child.meta.roles === this.roles&& child.meta.hide===false"></i>
-            <template #title v-if="child.meta.roles === this.roles&& child.meta.hide===false">
+            <i :class="child.icon" v-if="child.meta.roles === this.roles"></i>
+            <template #title v-if="child.meta.roles === this.roles">
               {{child.name}}
             </template>
           </el-menu-item>
         </el-submenu>
+
+        <el-submenu v-else-if="menu.children && menu.children[0].meta.roles === this.roles&& menu.meta.hide===true " :index="menu.children[0].path">
+          <template #title>
+            <i :class="menu.icon"></i>
+            <span :class="[isCollapse ? 'is-collapse' : '']">{{menu.name}}</span>
+          </template>
+          <el-menu-item   :index="menu.children[0].path">
+            <i :class="menu.children[0].icon"></i>
+            <template #title >
+              {{menu.children[0].name}}
+            </template>
+          </el-menu-item>
+        </el-submenu>
+
       </div>
     </el-menu>
   </el-aside>
@@ -81,7 +96,7 @@
         </el-col>
       </el-row>
     </el-header>
-    <el-main :style="{/*defaultHeight*/}">
+    <el-main :style="defaultHeight">
       <router-view/>
     </el-main>
   </el-container>
@@ -105,12 +120,12 @@ export default {
       logo:require('@/assets/logo2.jpg'),
       isCollapse: false,
       asideWidth:'220px',
-      /*defaultHeight:{
+      defaultHeight:{
         height:''
-      }*/
+      }
     });
     onBeforeMount(() => {
-      //state.defaultHeight.height = document.body.clientHeight + 'px'
+      state.defaultHeight.height = document.body.clientHeight + 'px'
       state.routers = router.options.routes
       if(!store.state.userInfo.username){
         label.value = '登录'
@@ -147,8 +162,6 @@ export default {
 <style lang="less">
 .container{
   background: rgb(245, 247, 249);
-  height: 100%;
-  
   .el-aside{
     height: 100%;
     transition: all .5s;

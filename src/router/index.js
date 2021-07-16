@@ -3,8 +3,6 @@ import Layout from "../layout/Layout";
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import store from '@/store/index'
-import service from '../utils/network'
-
 const routes = [
   {
     path:'/',
@@ -180,7 +178,7 @@ const routes = [
     component:Layout,
     name:'我的订单',
     icon:'el-icon-notebook-2',
-    meta:{title:"我的订单",roles:'user',hide:false,requireAuth: true},
+    meta:{title:"我的订单",roles:'user',hide:true,requireAuth: true},
     children: [
       {
         path: '/myOrder',
@@ -203,7 +201,7 @@ const routes = [
     component:Layout,
     name:'上传房源',
     icon:'el-icon-upload2',
-    meta:{title:"上传房源",roles:'user',hide:false,requireAuth: true},
+    meta:{title:"上传房源",roles:'user',hide:true,requireAuth: true},
     children: [
       {
         path: '/uploadListing',
@@ -265,7 +263,7 @@ const routes = [
     component:Layout,
     name:'查看房源',
     icon:'el-icon-search',
-    meta:{title:"查看房源",roles:'user',hide:false,requireAuth: true},
+    meta:{title:"查看房源",roles:'user',hide:true,requireAuth: true},
     children: [
       {
         path: '/viewListing',
@@ -307,15 +305,9 @@ router.beforeEach((to, from, next) => {
   if(to.path === '/login' || to.path === '/register'){
     store.commit('setToken','')
     store.commit('setUserName','')
-    localStorage.removeItem("user")
     next()
   }else{
-    service.get("users/verify/token").then(res=>next()).catch(err=>{
-      next({
-             path: '/login',
-             query: {redirect: to.fullPath}
-           })
-    })
+    next()
   }
 })
 
