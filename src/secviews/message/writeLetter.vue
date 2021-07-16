@@ -99,7 +99,7 @@ export default {
         //...
           sendSessions(this.ruleForm).then(res=>{
               this.$message.success("发送成功")
-          })
+          }).catch(err=>{this.$message.error(err.message)})
       })
     }
   }
